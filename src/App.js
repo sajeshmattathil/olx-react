@@ -1,30 +1,45 @@
 import './App.css';
-import {useState} from 'react'
-import { useNavigate,Routes,Route } from 'react-router-dom';
-import About from './Components/About'
-import Home from './Components/Home'
-import { AppContext } from './AppContext';
+import { firestore ,Collection, GetDocs } from './Firebase/Config';
+import { addDoc ,deleteDoc,doc,setDoc} from 'firebase/firestore/lite';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 function App() {
-  const [state,setState] = useState(50)
-const navigate = useNavigate()
+ 
+const handle =async ()=>{
+
+  try {
+
+   //read
+    // GetDocs(Collection(firestore,'Products')).then((citySnapshot)=> citySnapshot.forEach((obj)=>{console.log(obj.data(),obj.id)})).catch((err)=>console.log(err))
+
+    // addDoc(Collection(firestore,'Products'),{name:'Nokia',price:2000})
+    // deleteDoc(doc(firestore,'Products','q8wc3oKa1qw5Ejm7Av0K'))
+// setDoc(doc(firestore,'Products','q8wc3oKa1qw5Ejm7Av0K'),{name:'dkjksdjklds',price:8888888})
+  
+
+const auth = getAuth();
+createUserWithEmailAndPassword(auth, 'sajesh@gmail.com', 'password')
+  .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    console.log(user)
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  });
+
+
+}catch(err){console.log(err.message)}
+
+   }
+ 
   return (
     <div className="">
-     <button onClick={()=>{navigate('/home')}}>Home</button>
-     <button onClick={()=>{navigate('/about')}}>About</button>
-     
-      <AppContext.Provider value={{data:state}}>
-          <Routes>
-            <Route path='/home' element={  <Home/>} >
-            
-            </Route>
-          <Route  path='/about' element={   <About />} >
-           
-          </Route>
-          </Routes>
-      </AppContext.Provider>
-     
-    
+      <button onClick={handle  }>Click me</button>
+   
     </div>
   );
 }
