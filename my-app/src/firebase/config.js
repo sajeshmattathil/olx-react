@@ -1,7 +1,10 @@
 import {initializeApp} from 'firebase/app';
 import { getFirestore, collection, getDocs,addDoc } from 'firebase/firestore/lite';
 import {getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut} from 'firebase/auth'
-import firebase from 'firebase/auth'
+import {getStorage,ref} from 'firebase/storage'
+
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
 
  
 const firebaseConfig = {
@@ -23,3 +26,7 @@ export const AddDoc = addDoc
 export const signIn = signInWithEmailAndPassword
 export const onAuthState = onAuthStateChanged
 export const signout = signOut
+export const storage = getStorage
+export const Ref = ref
+
+export default firebase.initializeApp(firebaseConfig);

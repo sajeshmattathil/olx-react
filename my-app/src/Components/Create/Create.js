@@ -1,8 +1,40 @@
-import React, { Fragment } from 'react';
+import React, { Fragment,useState,useContext } from 'react';
 import './Create.css';
 import Header from '../Header/Header';
+import { FirebaseContext,AuthContext } from '../../Store/FirebaseContext';
+import {uploadBytes,ref,getStorage,getDownloadURL} from 'firebase/storage';
+import { useNavigate } from 'react-router-dom';
 
 const Create = () => {
+
+  const {AddDoc,Collection,firestore} = useContext(FirebaseContext)
+  const {user} = useContext(AuthContext)
+
+  const [name,setName] = useState('')
+  const [category,setCategory] = useState('')
+  const [price,setPrice] = useState('')
+  const [image,setImage] = useState('')
+  const navigate = useNavigate()
+
+  const handleSubmit =async (e)=>{
+    e.preventDefault()
+    console.log(image.name)
+try{
+  const storage = getStorage();
+  const storageRef = ref(storage, `images/${image.name}`);
+  const uploadTask =await uploadBytes(storageRef, image)
+    AddDoc(Collection(firestore,'Products'),{
+      name,
+      price,
+      category,
+      userId : user.uid
+    })
+    navigate('/')
+console.log('success')
+}catch(err){console.log(err.message);}
+  
+
+  }
   return (
     <Fragment>
       <Header />
@@ -12,6 +44,7 @@ const Create = () => {
             <label htmlFor="fname">Name</label>
             <br />
             <input
+              onChange={(e)=>{setName(e.target.value)}}
               className="input"
               type="text"
               id="fname"
@@ -22,6 +55,7 @@ const Create = () => {
             <label htmlFor="fname">Category</label>
             <br />
             <input
+               onChange={(e)=>{setCategory(e.target.value)}}
               className="input"
               type="text"
               id="fname"
@@ -31,16 +65,21 @@ const Create = () => {
             <br />
             <label htmlFor="fname">Price</label>
             <br />
-            <input className="input" type="number" id="fname" name="Price" />
+            <input onChange={(e)=>{
+              setPrice(e.target.value)
+            }}
+              className="input" type="number" id="fname" name="Price" />
             <br />
           </form>
           <br />
-          <img alt="Posts" width="200px" height="200px" src=""></img>
+          <img alt="Posts" width="200px" height="200px" src={image ? URL.createObjectURL(image) : ''}></img>
           <form>
             <br />
-            <input type="file" />
+            <input
+            onChange={(e)=>{setImage(e.target.files[0])}}
+            type="file" />
             <br />
-            <button className="uploadBtn">upload and Submit</button>
+            <button onClick={handleSubmit} className="uploadBtn">upload and Submit</button>
           </form>
         </div>
       </card>
