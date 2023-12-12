@@ -43,9 +43,9 @@ const navigate = useNavigate()
           />
           <br />
           <br />
-          <button>Login</button>
+          <button onClick={()=>navigate('/login')}>Login</button>
         </form>
-        <a>Signup</a>
+        <a onClick={()=>navigate('/signUp')}>Signup</a>
       </div>
     </div>
   );

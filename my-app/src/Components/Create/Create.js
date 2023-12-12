@@ -22,15 +22,19 @@ const Create = () => {
 try{
   const storage = getStorage();
   const storageRef = ref(storage, `images/${image.name}`);
-  const uploadTask =await uploadBytes(storageRef, image)
+  await uploadBytes(storageRef, image)
+  const downloadURL = await getDownloadURL(storageRef);
+
+ 
     AddDoc(Collection(firestore,'Products'),{
       name,
       price,
       category,
-      userId : user.uid
+      userId : user.uid,
+      url:downloadURL
+
     })
     navigate('/')
-console.log('success')
 }catch(err){console.log(err.message);}
   
 

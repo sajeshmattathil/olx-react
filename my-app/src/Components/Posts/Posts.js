@@ -7,10 +7,10 @@ import { PostContext } from '../../Store/postContext';
 import { useNavigate } from 'react-router-dom';
 
 function Posts() {
-  const [products,setProducts] = useState([])
 
+  const [products,setProducts] = useState([])
   const {firebase} = useContext(FirebaseContext)
-  console.log( firebase.firestore(),"dsjkljsd")
+  const {setPostDetails}= useContext(PostContext)
 
   useEffect(()=>{
     
@@ -24,7 +24,7 @@ function Posts() {
     })
    },[])
   
-const {setPostDetails}= useContext(PostContext)
+
 const navigate = useNavigate()
   return (
     <div className="postParentDiv">
@@ -49,7 +49,7 @@ products.map((product)=>{
               <Heart></Heart>
             </div>
             <div className="image">
-              <img src="../../../Images/R15V3.jpg" alt="" />
+              <img src={product.url} alt="" />
             </div>
             <div className="content">
               <p className="rate">&#x20B9; {product.price}</p>

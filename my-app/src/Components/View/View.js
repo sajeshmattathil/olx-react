@@ -4,11 +4,13 @@ import { FirebaseContext } from '../../Store/FirebaseContext';
 import './View.css';
 
 function View() {
-const [userDetails,setUserDetails] =useState()
-const {postDetails}  = useContext(PostContext)
-const {firebase}  = useContext(FirebaseContext)
+  const [userDetails,setUserDetails] =useState()
+  const {postDetails}  = useContext(PostContext)
+  const {firebase}  = useContext(FirebaseContext)
+
 useEffect(()=>{
   const {userId} = postDetails
+
   firebase.firestore().collection('users').where('id','==',userId  ).get().then((res=>{
     res.forEach((doc)=>{
       setUserDetails(doc.data())
